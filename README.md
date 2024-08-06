@@ -6,7 +6,9 @@ React, Tailwindcss
 
 ## Installation
 `npm create vite@latest .`
+
 `npm i`
+
 `npm install -D tailwindcss postcss autoprefixer`
 
 Follow further instructions from https://tailwindcss.com/docs/guides/vite
