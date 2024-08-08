@@ -24,7 +24,7 @@ export default function Search() {
     method: "GET",
     url: "https://google-search74.p.rapidapi.com/",
     params: {
-      query: "Nike",
+      query: jobtitle,
       limit: "10",
       related_keywords: "true",
     },
@@ -45,16 +45,6 @@ export default function Search() {
     }
     setLoading(false);
   };
-
-  // const handleLinkedinJobsSearch = async = () => {
-  //     setLoading(true);
-  //     try {
-  //         const linkedinjobs = await axios.request({
-
-  //         })
-  //     }
-  //     setLoading(false);
-  // }
 
   return (
     <div className="p-4">
@@ -79,7 +69,6 @@ export default function Search() {
           className="border border-gray-300 p-2 rounded bg-gray-300"
         />
       </div>
-      {/* <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Dropdown button <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"> */}
 
       <div>
         <h3 className="mt-6 items-center inline-flex font-semibold">
@@ -108,7 +97,6 @@ export default function Search() {
           ))}
         </ul>
       </div>
-      {/* {/* <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search..." className='border border-gray-300 p-2 rounded'/> */}
       <button
         onClick={handleSearch}
         className="ml-2 mt-6 p-2 bg-red-500 text-white rounded"
