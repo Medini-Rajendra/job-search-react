@@ -5,7 +5,7 @@ from boto3.dynamodb.conditions import Key
 
 app = Flask(__name__)
 
-dynamodb = boto3.resource('dynamodb', region='us-east-1')
+dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('indeed-jobs')
 
 @app.route('/indeed_jobs', methods=['POST'])
@@ -21,5 +21,9 @@ def get_indeed_jobs():
 
   return jsonify(status='success', data=data)
 
+@app.route('/', methods=['GET'])
+def hello_world():
+  return jsonify(message='hello world')
+
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run(debug=True, port=3000)
