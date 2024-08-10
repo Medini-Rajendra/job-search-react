@@ -23,4 +23,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-backend/__py_cache/*
+__pycache__/
+*/__pycache__/
