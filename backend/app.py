@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request
 import requests
 import boto3
@@ -5,7 +6,7 @@ from boto3.dynamodb.conditions import Key
 
 app = Flask(__name__)
 
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table('indeed-jobs')
 
 @app.route('/indeed_jobs', methods=['POST'])
@@ -26,4 +27,5 @@ def hello_world():
   return jsonify(message='hello world')
 
 if __name__ == '__main__':
-  app.run(debug=True, port=3000)
+  port = int(os.environ.get("PORT", 3000))
+  app.run(debug=True, port=port)
