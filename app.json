@@ -1,0 +1,23 @@
+{
+  "name": "Job Search React",
+  "description": "A description of my app",
+  "scripts": {
+    "postdeploy": "npm run dev"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "environments": {
+    "test": {
+      "scripts": {
+        "test-setup": "npm install"
+      },
+      "formation": {
+        "test": {
+          "quantity": 1,
+          "size": "standard-2x"
+        }
+      }
+    }
+  }
+}
