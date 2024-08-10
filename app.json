@@ -5,7 +5,7 @@
     "postdeploy": "npm run dev"
   },
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "development"
   },
   "environments": {
     "test": {
