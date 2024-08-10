@@ -10,7 +10,8 @@
   "environments": {
     "test": {
       "scripts": {
-        "test-setup": "npm install"
+        "test-setup": "pip install -r requirements.txt",
+        "test": "pytest"
       },
       "formation": {
         "test": {
