@@ -3,15 +3,19 @@ from flask import Flask, jsonify, request
 import requests
 import boto3
 from boto3.dynamodb.conditions import Key
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table('indeed-jobs')
 
+load_dotenv() # to load variables from .env file
+APIFY_INDEED_KEY = os.getenv('APIFY_INDEED_KEY')
+
 @app.route('/indeed_jobs', methods=['POST'])
 def get_indeed_jobs():
-  api_url = 'https://api.apify.com/v2/acts/misceres~indeed-scraper/run-sync-get-dataset-items?token=apify_api_csYwh9WSdz0JyyPP4IAArx50PEIoVW2QHrd3'
+  api_url = 'https://api.apify.com/v2/acts/misceres~indeed-scraper/run-sync-get-dataset-items?token={APIFY_INDEED_KEY}'
   payload = request.json
 
   response = requests.post(api_url, json=payload)
