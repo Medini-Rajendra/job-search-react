@@ -1,4 +1,5 @@
 import os
+import time
 from flask import Flask, jsonify, request
 import requests
 import boto3
@@ -15,13 +16,19 @@ APIFY_INDEED_KEY = os.getenv('APIFY_INDEED_KEY')
 
 @app.route('/indeed_jobs', methods=['POST'])
 def get_indeed_jobs():
-  api_url = 'https://api.apify.com/v2/acts/misceres~indeed-scraper/run-sync-get-dataset-items?token={APIFY_INDEED_KEY}'
+  api_url = f'https://api.apify.com/v2/acts/misceres~indeed-scraper/run-sync-get-dataset-items?token={APIFY_INDEED_KEY}'
   payload = request.json
 
   response = requests.post(api_url, json=payload)
   data = response.json()
 
-  for item in data:
+  time.sleep(30)
+
+  dataset_url= f'https://api.apify.com/v2/datasets/{data}/items?token={APIFY_INDEED_KEY}'
+  result_response = requests.get(dataset_url)
+  result_data = result_response.json()
+
+  for item in result_data:
     table.put_item(Item=item)
 
   return jsonify(status='success', data=data)
