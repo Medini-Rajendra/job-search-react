@@ -14,6 +14,7 @@ logging.basicConfig(
 )
 
 app = Flask(__name__)
+app.logger.setLevel(logging.DEBUG)
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table('indeed-jobs')
@@ -23,28 +24,34 @@ APIFY_INDEED_KEY = os.getenv('APIFY_INDEED_KEY')
 
 @app.route('/indeed_jobs', methods=['POST'])
 def get_indeed_jobs():
-  logging.info('Received request to scape jobs from Indeed API')
+  app.logger.info('Received request to scape jobs from Indeed API')
   try:
     api_url = f'https://api.apify.com/v2/acts/misceres~indeed-scraper/run-sync-get-dataset-items?token={APIFY_INDEED_KEY}'
     payload = request.json
 
     response = requests.post(api_url, json=payload)
     data = response.json()
-    logging.info(f'data from first url is {data}')
 
-    time.sleep(30)
+    for item in data:
+      try:
+        prep_data = {
+          'job_id': item['id'],
+          'jobtitle': item['positionName'],
+          'salary': item['salary'],
+          'company': item['company'],
+          'location': item['location'],
+          'jobtype': item['jobType'],
+          'applylink': item['externalApplyLink']
+        }
+        table.put_item(Item=prep_data)
+      except KeyError as e:
+        app.logger.error(f'Missing expected field in data: {e}')
+      except Exception as e:
+        app.logger.error(f'Error inserting item into DynamoDB: {e}')
 
-    dataset_url= f'https://api.apify.com/v2/datasets/{data}/items?token={APIFY_INDEED_KEY}'
-    result_response = requests.get(dataset_url)
-    result_data = result_response.json()
-    logging.info(f'this is the data from result_data - {result_data}')
-
-    for item in result_data:
-      table.put_item(Item=item)
-
-    return jsonify(status='success', data=result_data)
+    return jsonify(status='success', data=data)
   except Exception as e:
-    logging.error(f'Error scraping jobs {e}')
+    app.logger.error(f'Error scraping jobs {e}')
     return jsonify(error='Failed to scrape jobs'), 500
 
 @app.route('/', methods=['GET'])
