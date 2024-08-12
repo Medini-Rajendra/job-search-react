@@ -26,7 +26,8 @@ APIFY_INDEED_KEY = os.getenv('APIFY_INDEED_KEY')
 def get_indeed_jobs():
   app.logger.info('Received request to scape jobs from Indeed API')
   try:
-    api_url = f'https://api.apify.com/v2/acts/misceres~indeed-scraper/run-sync-get-dataset-items?token={APIFY_INDEED_KEY}'
+    indeed_api_key = request.headers.get('x-api-key', APIFY_INDEED_KEY)
+    api_url = f'https://api.apify.com/v2/acts/misceres~indeed-scraper/run-sync-get-dataset-items?token={indeed_api_key}'
     payload = request.json
 
     response = requests.post(api_url, json=payload)
